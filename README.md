@@ -14,21 +14,6 @@ Tech stack used is as follows:
     b. Prometheus for Disk Space monitoring
 
 ```
-mkdir -p influx_docker_dir/
-pushd docker_dir/
-docker run -d -p 8086:8086 \
-      -v $PWD/data:/var/lib/influxdb2 \
-      -v $PWD/config:/etc/influxdb2 \
-      -e DOCKER_INFLUXDB_INIT_MODE=setup \
-      -e DOCKER_INFLUXDB_INIT_USERNAME=my-user \
-      -e DOCKER_INFLUXDB_INIT_PASSWORD=my-password \
-      -e DOCKER_INFLUXDB_INIT_ORG=my-org \
-      -e DOCKER_INFLUXDB_INIT_BUCKET=my-bucket \
-      -e DOCKER_INFLUXDB_INIT_RETENTION=10y \
-      -e DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=my-super-secret-auth-token \
-      influxdb
-popd
-
 telegraf --config telegraf.conf
 ```
 
@@ -36,17 +21,15 @@ telegraf --config telegraf.conf
 
 ```
 from(bucket:"my-bucket")
-  |> range(start: -10h)
-  |> filter(fn: (r) =>
-    r._field == "i" and r._measurement == "example_mycollector" and r.tag1 == "a"
-  )
+  |> range(start: -1h)
+
 ```
 
 ```
 from(bucket:"my-bucket")
-  |> range(start: -10h)
+  |> range(start: -3w, stop: 15y)
   |> filter(fn: (r) =>
-    r._field == "temperature"
+    r._field == "assets"
   )
 ```
 

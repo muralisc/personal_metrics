@@ -1,7 +1,32 @@
 services:
+  web:
+    image: nginx
+    volumes:
+    - $HOME/public_html:/usr/share/nginx/html
+    ports:
+    - "9090:80"
+
+  influxdb:
+    image: influxdb:latest
+    ports:
+      - '8086:8086'
+    volumes:
+      - $PWD/influxdb/data:/var/lib/influxdb2
+      - $PWD/influxdb/config:/etc/influxdb2
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=my-user
+      - DOCKER_INFLUXDB_INIT_PASSWORD=my-password
+      - DOCKER_INFLUXDB_INIT_ORG=my-org
+      - DOCKER_INFLUXDB_INIT_BUCKET=my-bucket
+      - DOCKER_INFLUXDB_INIT_RETENTION="10y"
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=my-super-secret-auth-token
+
   grafana:
     image: grafana/grafana
     container_name: grafana
+    depends_on:
+      - influxdb
     volumes:
       - ./grafana_docker_dir/provisioning/:/etc/grafana/provisioning/
     ports:
