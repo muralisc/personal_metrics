@@ -14,7 +14,7 @@ Tech stack used is as follows:
     b. Prometheus for Disk Space monitoring
 
 ```
-mkdir -p docker_dir/
+mkdir -p influx_docker_dir/
 pushd docker_dir/
 docker run -d -p 8086:8086 \
       -v $PWD/data:/var/lib/influxdb2 \
