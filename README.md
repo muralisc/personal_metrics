@@ -1,8 +1,8 @@
 The Main purpose is for following:
 
 1. Financial Tracking / Forecasting
-2. Food Tracking
-3. 
+2. Food Tracking - Pizza
+3. Shoulder Exercise Tracking
 
 Tech stack used is as follows:
 1. Telegraph for collction of financial data
@@ -21,11 +21,14 @@ telegraf --config telegraf.conf
 
 ```
 from(bucket:"my-bucket")
-  |> range(start: -1h)
+  |> range(start: -1h, stop: 10y)
 
 ```
 
 ```
+The below plots data sent by:
+~/shared_folders/minimal/Pensieve/textfiles/ledger/graphs/1send_projection_to_influx.sh
+
 from(bucket:"my-bucket")
   |> range(start: -3w, stop: 15y)
   |> filter(fn: (r) =>
