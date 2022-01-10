@@ -11,8 +11,8 @@ services:
     ports:
       - '8086:8086'
     volumes:
-      - $PWD/influxdb/data:/var/lib/influxdb2
-      - $PWD/influxdb/config:/etc/influxdb2
+      - $PWD/influx_docker_dir/data:/var/lib/influxdb2
+      - $PWD/influx_docker_dir/config:/etc/influxdb2
     environment:
       - DOCKER_INFLUXDB_INIT_MODE=setup
       - DOCKER_INFLUXDB_INIT_USERNAME=my-user
@@ -24,10 +24,10 @@ services:
 
   grafana:
     image: grafana/grafana
-    container_name: grafana
     depends_on:
       - influxdb
     volumes:
+      - ./grafana_docker_dir/grafana.ini:/etc/grafana/grafana.ini
       - ./grafana_docker_dir/provisioning/:/etc/grafana/provisioning/
     ports:
       - 3000:3000

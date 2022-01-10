@@ -135,7 +135,7 @@
             "type": "influxdb",
             "uid": "${DS_INFLUXDB_V2_FLUX}"
           },
-          "query": "from(bucket:\"my-bucket\")\n  |> range(start: -3w, stop: 15y)\n  |> filter(fn: (r) =>\n    r._field == \"assets\"\n  )",
+          "query": "import \"date\"\nimport \"regexp\"\nimport \"strings\"\n\nraw_month = string(v: date.month(t: now()))\nmonth = if strings.strlen(v: raw_month) <= 1 then\n\"0\" + raw_month\nelse\nraw_month\n\n\n\nfrom(bucket:\"my-bucket\")\n  |> range(start: -3w, stop: 15y)\n  |> filter(fn: (r) =>\n    r._field == \"assets\" and\n    r.prediction_date =~ regexp.compile(v: \"2022-${month}\")\n  )",
           "refId": "A"
         }
       ],
@@ -158,6 +158,6 @@
   "timezone": "",
   "title": "Personal Finance",
   "uid": "Ns6aNJA7z",
-  "version": 8,
+  "version": 3,
   "weekStart": ""
 }
