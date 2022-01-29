@@ -7,6 +7,12 @@ services:
     - "9090:80"
     restart: always
 
+  telegraf:
+    image: telegraf
+    volumes:
+    - $PWD/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+    restart: always
+
   influxdb:
     image: influxdb:latest
     ports:
