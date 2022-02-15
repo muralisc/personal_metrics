@@ -25,6 +25,18 @@
     },
     {
       "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "text",
+      "name": "Text",
+      "version": ""
+    },
+    {
+      "type": "panel",
       "id": "timeseries",
       "name": "Time series",
       "version": ""
@@ -141,9 +153,88 @@
       ],
       "title": "Forecast",
       "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "${DS_INFLUXDB_V2_FLUX}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 3,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.3.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB_V2_FLUX}"
+          },
+          "query": "import \"date\"\nimport \"regexp\"\nimport \"strings\"\nimport \"experimental\"\n\nraw_month = string(v: date.month(t: now()))\nmonth = if strings.strlen(v: raw_month) <= 1 then\n\"0\" + raw_month\nelse\nraw_month\n\n\n\nfrom(bucket:\"my-bucket\")\n  |> range(start: -3w)\n  |> filter(fn: (r) =>\n    r._field == \"hourly_rate\" \n  )",
+          "refId": "A"
+        }
+      ],
+      "title": "Past year hourly rate",
+      "type": "stat"
+    },
+    {
+      "gridPos": {
+        "h": 13,
+        "w": 12,
+        "x": 12,
+        "y": 12
+      },
+      "id": 5,
+      "options": {
+        "content": "<iframe src=\"http://192.168.0.26:18000\" width=\"850\" height=\"435\"></iframe>",
+        "mode": "html"
+      },
+      "pluginVersion": "8.3.3",
+      "title": "Panel Title",
+      "type": "text"
     }
   ],
-  "refresh": false,
+  "refresh": "",
   "schemaVersion": 34,
   "style": "dark",
   "tags": [],
@@ -158,6 +249,6 @@
   "timezone": "",
   "title": "Personal Finance",
   "uid": "Ns6aNJA7z",
-  "version": 8,
+  "version": 15,
   "weekStart": ""
 }

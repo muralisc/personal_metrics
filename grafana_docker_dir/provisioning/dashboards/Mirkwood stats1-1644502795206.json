@@ -107,7 +107,8 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "none"
         },
         "overrides": []
       },
@@ -135,13 +136,130 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
-          "expr": "node_filesystem_free_bytes{mountpoint=\"/home\"}",
+          "expr": "node_filesystem_size_bytes{mountpoint=\"/home\"} - node_filesystem_free_bytes{mountpoint=\"/home\"}",
+          "hide": true,
           "interval": "",
           "legendFormat": "",
           "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "exemplar": true,
+          "expr": "100 - (node_filesystem_avail_bytes/node_filesystem_size_bytes * 100)",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "{{mountpoint}}",
+          "refId": "B"
         }
       ],
-      "title": "Panel Title",
+      "title": "Filesystem Used bytes %",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 3,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "exemplar": true,
+          "expr": "100 - (node_filesystem_avail_bytes{mountpoint=\"/home\"}/node_filesystem_size_bytes{mountpoint=\"/home\"} * 100)",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "{{mountpoint}}",
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "exemplar": true,
+          "expr": "100 - (node_filesystem_avail_bytes{mountpoint=\"/data\"}/node_filesystem_size_bytes{mountpoint=\"/data\"} * 100)",
+          "hide": false,
+          "interval": "",
+          "legendFormat": "{{mountpoint}}",
+          "refId": "A"
+        }
+      ],
+      "title": "Filesystem Used bytes % (/home + /data)",
       "type": "timeseries"
     }
   ],
@@ -158,8 +276,8 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Mirkwood stats",
+  "title": "Mirkwood stats1",
   "uid": "QsAknsb7z",
-  "version": 1,
+  "version": 10,
   "weekStart": ""
 }
