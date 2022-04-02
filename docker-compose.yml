@@ -4,6 +4,7 @@ services:
     volumes:
     - $HOME/public_html:/usr/share/nginx/html
     ports:
+    # Host:Docker
     - "18000:80"
     restart: always
 
