@@ -4,7 +4,7 @@ datasources:
   - name: InfluxDB_v2_Flux
     type: influxdb
     access: proxy
-    url: http://192.168.0.26:8086
+    url: http://192.168.0.237:8086
     secureJsonData:
       token: my-super-secret-auth-token
     jsonData:
