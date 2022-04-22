@@ -1,35 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_INFLUXDB_V2_FLUX",
-      "label": "InfluxDB_v2_Flux",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "influxdb",
-      "pluginName": "InfluxDB"
-    }
-  ],
-  "__elements": [],
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "8.3.3"
-    },
-    {
-      "type": "datasource",
-      "id": "influxdb",
-      "name": "InfluxDB",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -52,14 +21,14 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": null,
+  "id": 6,
   "links": [],
   "liveNow": false,
   "panels": [
     {
       "datasource": {
         "type": "influxdb",
-        "uid": "${DS_INFLUXDB_V2_FLUX}"
+        "uid": "InfluxDB_v2_Flux"
       },
       "fieldConfig": {
         "defaults": {
@@ -132,7 +101,7 @@
         {
           "datasource": {
             "type": "influxdb",
-            "uid": "${DS_INFLUXDB_V2_FLUX}"
+            "uid": "InfluxDB_v2_Flux"
           },
           "query": "from(bucket:\"my-bucket\")\n  |> range(start: -5d, stop: 10y)",
           "refId": "A"
@@ -157,6 +126,6 @@
   "timezone": "",
   "title": "All data",
   "uid": "fDWVCbAnz",
-  "version": 2,
+  "version": 3,
   "weekStart": ""
 }

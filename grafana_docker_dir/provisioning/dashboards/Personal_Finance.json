@@ -1,0 +1,211 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 4,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "InfluxDB_v2_Flux"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "currencyUSD"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "InfluxDB_v2_Flux"
+          },
+          "query": "import \"date\"\nimport \"regexp\"\nimport \"strings\"\nimport \"experimental\"\n\nraw_month = string(v: date.month(t: now()))\nmonth = if strings.strlen(v: raw_month) <= 1 then\n\"0\" + raw_month\nelse\nraw_month\n\n\n\nfrom(bucket:\"my-bucket\")\n  |> range(start: -3w, stop: 15y)\n  |> filter(fn: (r) =>\n    r._field == \"assets\" and\n    experimental.subDuration(d: 5d, from: time(v: now())) < time(v: r.prediction_date) and\n    r.prediction_date =~ regexp.compile(v: \"2022-${month}\")\n  )",
+          "refId": "A"
+        }
+      ],
+      "title": "Forecast",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "influxdb",
+        "uid": "InfluxDB_v2_Flux"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "currencyGBP"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 3,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.3.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "InfluxDB_v2_Flux"
+          },
+          "query": "import \"date\"\nimport \"regexp\"\nimport \"strings\"\nimport \"experimental\"\n\nraw_month = string(v: date.month(t: now()))\nmonth = if strings.strlen(v: raw_month) <= 1 then\n\"0\" + raw_month\nelse\nraw_month\n\n\n\nfrom(bucket:\"my-bucket\")\n  |> range(start: -3w)\n  |> filter(fn: (r) =>\n    r._field == \"hourly_rate\" \n  )",
+          "refId": "A"
+        }
+      ],
+      "title": "Past year hourly rate",
+      "type": "stat"
+    },
+    {
+      "gridPos": {
+        "h": 13,
+        "w": 12,
+        "x": 12,
+        "y": 12
+      },
+      "id": 5,
+      "options": {
+        "content": "<iframe src=\"http://192.168.0.26:18000\" width=\"850\" height=\"435\"></iframe>",
+        "mode": "html"
+      },
+      "pluginVersion": "8.3.3",
+      "title": "Panel Title",
+      "type": "text"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 34,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "2020-01-01T00:00:00.000Z",
+    "to": "2029-01-01T23:59:59.000Z"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "Personal Finance",
+  "uid": "Ns6aNJA7z",
+  "version": 3,
+  "weekStart": ""
+}

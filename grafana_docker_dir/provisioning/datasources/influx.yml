@@ -12,3 +12,7 @@ datasources:
       organization: my-org
       defaultBucket: my-bucket
       tlsSkipVerify: true
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    url: http://192.168.0.237:9090
