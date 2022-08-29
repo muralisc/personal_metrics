@@ -10,4 +10,4 @@ scrape_configs:
     scrape_interval: 5s
     static_configs:
       - targets:
-        - '192.168.0.26:9100'
+        - '192.168.1.237:9100'
